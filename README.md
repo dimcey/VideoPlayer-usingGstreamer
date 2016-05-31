@@ -25,15 +25,16 @@ This architectural choice for the project structure allows the user to create hi
 
 # Architecture
 ![alt tag](https://github.com/dimcey/VideoPlayer-usingGstreamer/blob/master/Architecture.png)
+
 The classes and packages dependencies have been thought to enable a clear development, to facilitate the reusability of our solution and to bring high scalability. As was previously mentioned, the GUI is loosely coupled with the Client’s Pipeline class so that if an end user wants to develop his own GUI, he just needs to call methods from the Pipeline class. The Pipeline class implements the Gstreamer functionality and handles a playbin to which is attached a demultiplexer that first sinks the video and then is separating the audio from the video part by sending both of them to the respective elements for audio and video decoding.
 
 # Algorithm description
-For the application development, we have used a special builtin pipeline called playbin2. The pipeline is used to encapsulate a common pipeline making in media player applications such as setting the file source, adding demuxing element and setting appropriate decoders and finally connecting to displaying sinks. All these common operations are already done in PlayBin pipeline and all we have to do to use is to set the media source and setting appropriate sinking element to display the media. The architecture of the playBin pipeline is shown below.
+For the application development, a special builtin pipeline called playbin2 was used. The pipeline is used to encapsulate a common pipeline making in media player applications such as setting the file source, adding demuxing element and setting appropriate decoders and finally connecting to displaying sinks. All these common operations are already done in PlayBin pipeline and all that had to be done is to set the media source and setting appropriate sinking element to display the media. The architecture of the playBin pipeline is shown below.
 
 ![alt tag](https://github.com/dimcey/VideoPlayer-usingGstreamer/blob/master/playbin.png)
 
-In the media player, we have created a video component which is a swing component that displays the video that is sent to it. we need to attach it to the playBin to set it as a sink for displaying the video using setVideoSink() function of the playbin pipeline
+In the media player, a video component was created which is a swing component that displays the video that is sent to it. That needed to be attach to the playBin to set it as a sink for displaying the video using setVideoSink() function of the playbin pipeline
 
 # Challenges
-The main problem was the synchronisation of the Java Swing GUI with the internal pipelines. Some of the GUI elements run on their own thread and we had a problem when we try to exit the fullscreen mode. Once in the fullscreen mode, we hide the panel to render the video truly fullscreen. Now to exit the fullscreen we had to add an actionlistener to the whole frame as there are no more panels and menus in fullscreen mode, but the response to this frame stimulus was not very rapid and only worked after sometime, as the actionlistener is running in another thread. 
+The main problem was the synchronisation of the Java Swing GUI with the internal pipelines. Some of the GUI elements run on their own thread and a problem arrise when there is an attempt to exit the fullscreen mode. Once in the fullscreen mode, it is necesarry to hide the panel to render the video truly fullscreen. Now to exit the fullscreen an actionlistener was added to the whole frame as there are no more panels and menus in fullscreen mode, but the response to this frame stimulus was not very rapid and only worked after sometime, as the actionlistener is running in another thread. 
 
